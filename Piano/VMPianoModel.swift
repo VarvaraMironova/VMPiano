@@ -26,8 +26,9 @@ enum VMKeyLabel: String, CaseIterable {
 
 struct VMPianoModel {
     var keys = [VMKeyModel]()
+    static let shared = VMPianoModel()
     
-    init() {
+    private init() {
         VMKeyLabel.allCases.forEach { label in
             keys.append(VMKeyModel(label: label))
         }
@@ -35,10 +36,9 @@ struct VMPianoModel {
     
     public func playKey(_ keyName: String, _ play: Bool) {
         if let result = keys.first(
-            where:
-                { key in
+            where: { key in
                     key.label.rawValue == keyName
-                })
+            })
         {
             result.play(play)
         }

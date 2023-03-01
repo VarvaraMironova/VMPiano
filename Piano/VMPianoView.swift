@@ -12,15 +12,62 @@ class VMPianoView: SCNView {
     
     var keysAttached = SCNNode()
     
+    var touchKeys = [UITouch:VMKeyNode]()
+    
+    //MARK: - Life cycle
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
         scene = SCNScene()
         backgroundColor = .gray
+        isMultipleTouchEnabled = true
 
         setupCameraAndLights()
     }
     
+    //MARK: - Touch handling
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches {
+            if touchKeys[touch] == nil, let key = keyAtPoint(touch.location(in: self)) {
+                touchKeys[touch] = key
+                
+                play(key)
+            }
+        }
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches {
+            if let key = keyAtPoint(touch.location(in: self)) {
+                touchKeys[touch] = nil
+                stopPlaying(key)
+            }
+        }
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches {
+            if let key = keyAtPoint(touch.location(in: self)){
+                if let previousKey = touchKeys[touch], previousKey != key {
+                    stopPlaying(previousKey)
+                    play(key)
+                    touchKeys[touch] = key
+                }
+            }
+        }
+    }
+    
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches {
+            if let key = keyAtPoint(touch.location(in: self)) {
+                touchKeys[touch] = nil
+                stopPlaying(key)
+            }
+        }
+    }
+    
+    //MARK: - Public
     func configurePiano(_ piano: VMPianoModel) {
         setupKeysNode()
         
@@ -43,6 +90,7 @@ class VMPianoView: SCNView {
         }
     }
     
+    //MARK: - Private
     private func setupKeysNode() {
         keysAttached.position = SCNVector3(-0.15, 0.0, 0.0)
         keysAttached.rotation = SCNVector4(1.0, 0.0, 0.0, -2.4)
@@ -90,18 +138,25 @@ class VMPianoView: SCNView {
         }
     }
     
-    func keyAtPoint(_ point: CGPoint) -> String? {
+    private func keyAtPoint(_ point: CGPoint) -> VMKeyNode? {
         let htResults = hitTest(point, options: nil)
-        for htresult in htResults {
-            if let name = htresult.node.name {
-                print(name)
-            } else {
-                print(htresult)
-            }
-        }
         
-        return htResults.first?.node.name
+        return htResults.first?.node as? VMKeyNode
     }
     
+    private func play(_ key:VMKeyNode) {
+        let piano = VMPianoModel.shared
+        
+        if let keyName = key.name {
+            piano.playKey(keyName, true)
+        }
+    }
     
+    private func stopPlaying(_ key: VMKeyNode) {
+        let piano = VMPianoModel.shared
+        
+        if let keyName = key.name {
+            piano.playKey(keyName, false)
+        }
+    }
 }

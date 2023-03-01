@@ -13,30 +13,7 @@ import SceneKit
 class GameViewController: UIViewController {
 
     var sceneView: SCNView?
-    let piano = VMPianoModel()
-    
-    @IBAction func onPanGR(_ sender: UILongPressGestureRecognizer) {
-        if let sceneView = view as? VMPianoView {
-            for i in 0...sender.numberOfTouches-1 {
-                if let keyName = sceneView.keyAtPoint(sender.location(ofTouch : i,
-                                                                      in      : sceneView))
-                {
-                    switch sender.state {
-                    case .began:
-                        piano.playKey(keyName, true)
-                        break
-                        
-                    case .ended, .cancelled, .failed:
-                        piano.playKey(keyName, false)
-                        break
-                        
-                    default:
-                        break
-                    }
-                }
-            }
-        }
-    }
+    let piano = VMPianoModel.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()

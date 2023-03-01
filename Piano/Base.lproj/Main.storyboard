@@ -15,17 +15,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="nBH-I5-1AQ" appends="YES" id="hwI-M8-mco"/>
-                        </connections>
                     </sceneKitView>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
-                <pongPressGestureRecognizer requiresExclusiveTouchType="NO" allowableMovement="10" minimumPressDuration="0.0" id="nBH-I5-1AQ">
-                    <connections>
-                        <action selector="onPanGR:" destination="BV1-FR-VrT" id="pCb-NB-ltr"/>
-                    </connections>
-                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-16" y="-20"/>
         </scene>
