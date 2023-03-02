@@ -15,7 +15,6 @@ class VMPianoView: SCNView {
     var touchKeys = [UITouch:VMKeyNode]()
     
     //MARK: - Life cycle
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -29,9 +28,8 @@ class VMPianoView: SCNView {
     //MARK: - Touch handling
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
-            if touchKeys[touch] == nil, let key = keyAtPoint(touch.location(in: self)) {
+            if let key = keyAtPoint(touch.location(in: self)) {
                 touchKeys[touch] = key
-                
                 play(key)
             }
         }
@@ -49,7 +47,9 @@ class VMPianoView: SCNView {
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             if let key = keyAtPoint(touch.location(in: self)){
-                if let previousKey = touchKeys[touch], previousKey != key {
+                if let previousKey = touchKeys[touch],
+                   previousKey != key
+                {
                     stopPlaying(previousKey)
                     play(key)
                     touchKeys[touch] = key

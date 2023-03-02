@@ -43,4 +43,10 @@ struct VMPianoModel {
             result.play(play)
         }
     }
+    
+    public func stopPlaying() {
+        for key in keys {
+            key.play(false)
+        }
+    }
 }

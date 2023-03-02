@@ -14,9 +14,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
 
-    private func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+    private func application(application: UIApplication,
+                             didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool
+    {
         return true
+    }
+    
+    func applicationWillResignActive(_ application: UIApplication) {
+        VMPianoModel.shared.stopPlaying()
+    }
+    
+    func applicationWillTerminate(_ application: UIApplication) {
+        VMPianoModel.shared.stopPlaying()
+    }
+    
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        VMPianoModel.shared.stopPlaying()
     }
 
 }

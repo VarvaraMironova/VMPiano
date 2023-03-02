@@ -13,14 +13,14 @@ import SceneKit
 class GameViewController: UIViewController {
 
     var sceneView: SCNView?
-    let piano = VMPianoModel.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if let sceneView = view as? VMPianoView {
-            sceneView.configurePiano(piano)
+            sceneView.configurePiano(VMPianoModel.shared)
         }
     }
+    
 
 }
